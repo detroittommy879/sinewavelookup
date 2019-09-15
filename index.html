@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Sinewave Lookup Array</title>
+    <style>
+      input[type=number], select {
+        width: 180px;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+
+      input[type=submit] {
+        width: 180px;
+        background-color: #4CAF50;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      input[type=button]:hover {
+        background-color: #45a049;
+      }
+
+      div {
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 20px;
+      }
+    </style>
+</head>
+
+<body>
+  <h3>Sine Wave lookup table for C/Arduino/anything</h3>
+  <h4>Array Length is how many individual numbers in the array, and Possible Values is the highest the sine will
+    go in the positive and negative direction - ex putting 127 will give a range of -127 to 127</h4>
+    <form name="SineWave">
+        <div>
+          <label>Array length:</label> <input type="number" min="2" max="99999999" id="leng">
+        </div>
+        <div>
+          <label>Possible values:</label> <input type="number" id="power">
+        </div>
+
+        <div class="button">
+          <input type="button" onclick="myFunction()" value="Calculate"></input>
+        </div>
+    </form>
+</body>
+<p id="sine">hjgjhgjgjgjhgj</p>
+
+<script>
+function myFunction() {
+  var si = [];
+  var out = "{";
+  var i = 0;
+  var j = 0;
+  var ii = 0;
+  var k = 0;
+  var le = 64;           /*Number of entries in the lookup table                  */
+  var maxline = 16;      /*Max numbers in a line (so its not all on one)*/
+
+  le = document.getElementById("leng").value;
+  var power = document.getElementById("power").value;
+
+
+  var end = Math.PI*2;
+  var step = end/le;
+
+  for (i=0; i<le; i++) {
+    j = (i/le)*end;
+    k = Math.sin(j) * power;
+    si.push(Math.round(k));
+  }
+
+  for (i=0; i<si.length; i++) {
+    out = out + si[i];
+    if (i<si.length-1) out = out + ",";
+    ii++;
+    if (ii>maxline) {
+      ii = 0;
+      out = out + "<br>";
+    }
+  }
+  out = out + "}";
+
+  document.getElementById("sine").innerHTML = out;
+
+}
+</script>
+</html>
